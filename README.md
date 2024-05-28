@@ -1,6 +1,4 @@
-Here's a comprehensive `README.md` file for your healthcare management system project:
 
-```markdown
 # Healthcare Management System
 
 This repository contains a healthcare management system implemented as a set of microservices. Each microservice handles a specific domain within the system.
@@ -154,20 +152,3 @@ This project aims to provide a comprehensive solution for managing various aspec
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 ```
 
-### Final Steps
-
-1. **Create the GitHub Repository**:
-   - Go to GitHub and create a new repository named `healthcare-system`.
-
-2. **Push Your Local Project to GitHub**:
-   - Initialize the Git repository, add all files, commit, and push to GitHub:
-     ```bash
-     cd healthcare-system
-     git init
-     git add .
-     git commit -m "Initial commit"
-     git remote add origin https://github.com/your-username/healthcare-system.git
-     git push -u origin main
-     ```
-
-This README file provides a comprehensive overview of the project, including setup instructions, how to run the system, and details about the API endpoints. If you have any further questions or need additional assistance, please let me know!
