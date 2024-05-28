@@ -192,26 +192,5 @@ The Appointment Service is a microservice that handles appointment scheduling, r
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 ```
 
-### Setting Up the GitHub Repository
-
-1. **Create a New Repository on GitHub**:
-   - Go to [github.com](https://github.com/) and sign in.
-   - Click on the `+` icon in the upper right corner and select `New repository`.
-   - Name the repository (e.g., `appointment-service`).
-   - Add a description (optional).
-   - Choose the repository to be public or private.
-   - Check the box to initialize the repository with a `README`.
-   - Click on `Create repository`.
-
-2. **Push Your Local Project to GitHub**:
-   - Initialize the Git repository, add all files, commit, and push to GitHub:
-     ```bash
-     cd appointment-service
-     git init
-     git add .
-     git commit -m "Initial commit"
-     git remote add origin https://github.com/your-username/appointment-service.git
-     git push -u origin main
-     ```
 
 By following these steps, you should have a complete and documented Appointment Service ready for deployment and testing. If you have any questions or need further assistance, please let me know!
