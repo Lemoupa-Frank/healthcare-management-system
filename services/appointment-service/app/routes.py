@@ -1,6 +1,5 @@
 import requests
-from flask import current_app
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import Appointment
 from datetime import datetime
@@ -19,7 +18,11 @@ def create_appointment():
     current_user = get_jwt_identity()
     doctor = data.get('doctor')
     date_time_str = data.get('date_time')
-    
+    slot = data.get('slot')
+    email = data.get('email')
+    phone = data.get('phone')
+    reminder_method = data.get('reminder_method', 'email')
+
     if not user_exists(current_user):
         return jsonify({'message': 'User does not exist'}), 404
 
@@ -28,7 +31,10 @@ def create_appointment():
     except ValueError:
         return jsonify({'message': 'Invalid date format'}), 400
 
-    appointment = Appointment(current_user, doctor, date_time)
+    if Appointment.find_by_doctor_and_slot(doctor, date_time, slot):
+        return jsonify({'message': 'Doctor already booked for this slot'}), 409
+
+    appointment = Appointment(current_user, doctor, date_time, slot, email=email, phone=phone, reminder_method=reminder_method)
     appointment.save_to_db()
     return jsonify({'message': 'Appointment created successfully'}), 201
 
@@ -64,8 +70,20 @@ def update_appointment(appointment_id):
             update_fields['date_time'] = datetime.strptime(data['date_time'], '%Y-%m-%d %H:%M:%S')
         except ValueError:
             return jsonify({'message': 'Invalid date format'}), 400
+    if 'slot' in data:
+        existing_appointment = Appointment.find_by_id(appointment_id)
+        if existing_appointment and (existing_appointment['doctor'] != data['doctor'] or existing_appointment['slot'] != data['slot']):
+            if Appointment.find_by_doctor_and_slot(update_fields.get('doctor', existing_appointment['doctor']), update_fields.get('date_time', existing_appointment['date_time']), data['slot']):
+                return jsonify({'message': 'Doctor already booked for this slot'}), 409
+        update_fields['slot'] = data['slot']
     if 'status' in data:
         update_fields['status'] = data['status']
+    if 'email' in data:
+        update_fields['email'] = data['email']
+    if 'phone' in data:
+        update_fields['phone'] = data['phone']
+    if 'reminder_method' in data:
+        update_fields['reminder_method'] = data['reminder_method']
     
     Appointment.update_appointment(appointment_id, update_fields)
     return jsonify({'message': 'Appointment updated successfully'}), 200
