@@ -183,3 +183,10 @@ def setup_mfa():
     users.update_one({'username': current_user}, {'$set': {'mfa_enabled': mfa_enabled}})
 
     return jsonify({'message': 'MFA setting updated successfully'}), 200
+
+@auth.route('/user/<username>', methods=['GET'])
+def check_user(username):
+    user_data = User.find_by_username(username)
+    if user_data:
+        return jsonify({'exists': True}), 200
+    return jsonify({'exists': False}), 404

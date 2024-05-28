@@ -1,9 +1,16 @@
+import requests
+from flask import current_app
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import Appointment
 from datetime import datetime
 
 appointments = Blueprint('appointments', __name__)
+
+def user_exists(username):
+    user_service_url = current_app.config['USER_SERVICE_URL']
+    response = requests.get(f"{user_service_url}/api/auth/user/{username}")
+    return response.status_code == 200
 
 @appointments.route('', methods=['POST'])
 @jwt_required()
@@ -13,6 +20,9 @@ def create_appointment():
     doctor = data.get('doctor')
     date_time_str = data.get('date_time')
     
+    if not user_exists(current_user):
+        return jsonify({'message': 'User does not exist'}), 404
+
     try:
         date_time = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
     except ValueError:
