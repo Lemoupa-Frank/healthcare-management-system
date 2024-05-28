@@ -1,6 +1,6 @@
 Here's a README.md for the Appointment Service that outlines its purpose, setup, and usage:
 
-```markdown
+
 # Appointment Service
 
 The Appointment Service is a microservice that handles appointment scheduling, retrieval, updating, and deletion for users. It is part of a larger healthcare management system.
