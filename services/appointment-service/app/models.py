@@ -1,5 +1,7 @@
 from pymongo import MongoClient
 from bson import ObjectId
+from flask import current_app, g
+from flask_pymongo import PyMongo
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.appointment_service
@@ -41,3 +43,8 @@ class Appointment:
     @staticmethod
     def find(criteria):
         return db.appointments.find(criteria)
+    
+def get_db():
+    if 'mongo' not in g:
+        g.mongo = PyMongo(current_app)
+    return g.mongo.db
